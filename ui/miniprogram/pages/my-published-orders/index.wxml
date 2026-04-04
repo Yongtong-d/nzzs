@@ -1,0 +1,54 @@
+<scroll-view class="page" scroll-y="true">
+  <view class="page-inner">
+    <scroll-view class="tabs-scroll" scroll-x="true" enable-flex="true">
+      <view class="tabs">
+        <view
+          wx:for="{{tabs}}"
+          wx:key="value"
+          class="tab-item {{currentTab === item.value ? 'tab-item-active' : ''}}"
+          data-value="{{item.value}}"
+          bindtap="handleTabChange"
+        >
+          <text class="tab-text">{{item.label}}</text>
+        </view>
+      </view>
+    </scroll-view>
+
+    <view wx:if="{{loading}}" class="state-card">
+      <text class="state-text">{{texts.loadingText}}</text>
+    </view>
+
+    <block wx:elif="{{filteredOrders.length}}">
+      <view wx:for="{{filteredOrders}}" wx:key="id" class="order-card" data-id="{{item.id}}" bindtap="goOrderDetail">
+        <view class="card-head">
+          <view class="head-main">
+            <text class="pet-name">{{item.petName}}</text>
+            <text class="service-type">{{item.serviceType}}</text>
+          </view>
+          <text class="status-tag status-{{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+
+        <view class="info-row">
+          <text class="info-label">{{texts.serviceTimeLabel}}</text>
+          <text class="info-value">{{item.serviceTime}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.priceLabel}}</text>
+          <text class="price-value">{{texts.pricePrefix}}{{item.price}}</text>
+        </view>
+
+        <view class="card-footer">
+          <button class="detail-button" data-id="{{item.id}}" bindtap="goOrderDetail">{{texts.detailButton}}</button>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="state-card">
+      <text class="state-text">{{texts.emptyText}}</text>
+    </view>
+
+    <view wx:if="{{errorMessage}}" class="error-box">
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+  </view>
+</scroll-view>

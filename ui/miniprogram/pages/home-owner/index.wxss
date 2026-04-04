@@ -1,0 +1,260 @@
+.page {
+  min-height: 100vh;
+  padding: 28rpx 24rpx 40rpx;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #f6f8fb 0%, #edf2f7 100%);
+}
+
+.hero-card,
+.quick-card,
+.order-card,
+.state-card,
+.error-box {
+  background: #ffffff;
+  border-radius: 24rpx;
+  box-shadow: 0 12rpx 30rpx rgba(31, 41, 55, 0.08);
+}
+
+.hero-card {
+  padding: 32rpx 28rpx;
+}
+
+.hero-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero-label {
+  display: block;
+  font-size: 24rpx;
+  color: #6b7280;
+}
+
+.hero-role {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 40rpx;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.switch-button {
+  height: 64rpx;
+  line-height: 64rpx;
+  margin: 0;
+  padding: 0 24rpx;
+  border: none;
+  border-radius: 999rpx;
+  background: #eef2ff;
+  color: #3154d6;
+  font-size: 24rpx;
+}
+
+.switch-button::after {
+  border: 0;
+}
+
+.publish-button {
+  margin-top: 28rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+  border: none;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #ff9259 0%, #f97316 100%);
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 700;
+  box-shadow: 0 16rpx 28rpx rgba(249, 115, 22, 0.24);
+}
+
+.publish-button::after,
+.detail-button::after {
+  border: 0;
+}
+
+.quick-section,
+.orders-section {
+  margin-top: 28rpx;
+}
+
+.section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18rpx;
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.section-link {
+  font-size: 24rpx;
+  color: #3154d6;
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18rpx;
+}
+
+.quick-card {
+  min-height: 168rpx;
+  padding: 24rpx;
+  box-sizing: border-box;
+}
+
+.quick-card-orders {
+  background: linear-gradient(180deg, #ffffff 0%, #fff5ec 100%);
+}
+
+.quick-card-records {
+  background: linear-gradient(180deg, #ffffff 0%, #eef8ff 100%);
+}
+
+.quick-card-reviews {
+  background: linear-gradient(180deg, #ffffff 0%, #f3f0ff 100%);
+}
+
+.quick-card-profile {
+  background: linear-gradient(180deg, #ffffff 0%, #eefbf3 100%);
+}
+
+.quick-title {
+  display: block;
+  font-size: 28rpx;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.quick-desc {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+.state-card {
+  padding: 28rpx;
+}
+
+.state-text {
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.order-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20rpx;
+}
+
+.order-card {
+  padding: 28rpx 24rpx;
+}
+
+.order-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.pet-name {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.service-type {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 25rpx;
+  color: #6b7280;
+}
+
+.status-tag {
+  flex-shrink: 0;
+  padding: 10rpx 18rpx;
+  border-radius: 999rpx;
+  font-size: 22rpx;
+  font-weight: 600;
+}
+
+.status-pending {
+  background: #fff4db;
+  color: #b76a00;
+}
+
+.status-accepted {
+  background: #e8f2ff;
+  color: #1d4ed8;
+}
+
+.status-serving {
+  background: #e6f9ef;
+  color: #0f9f61;
+}
+
+.status-completed {
+  background: #ecfdf3;
+  color: #15803d;
+}
+
+.status-cancelled {
+  background: #fff1f2;
+  color: #dc2626;
+}
+
+.order-info {
+  margin-top: 22rpx;
+}
+
+.info-label {
+  display: block;
+  font-size: 23rpx;
+  color: #9ca3af;
+}
+
+.info-value {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 26rpx;
+  color: #374151;
+}
+
+.order-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 24rpx;
+}
+
+.detail-button {
+  height: 68rpx;
+  line-height: 68rpx;
+  margin: 0;
+  padding: 0 28rpx;
+  border: none;
+  border-radius: 999rpx;
+  background: #1f2937;
+  color: #ffffff;
+  font-size: 24rpx;
+}
+
+.error-box {
+  margin-top: 24rpx;
+  padding: 24rpx;
+  background: #fff4f4;
+}
+
+.error-text {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #d14343;
+}

@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="hero">
+    <text class="eyebrow">ROLE CENTER</text>
+    <text class="title">当前身份管理</text>
+    <text class="subtitle">支持 owner 和 feeder 两种身份。切换成功后会同步刷新本地 Token 与用户信息。</text>
+  </view>
+
+  <view class="card">
+    <text class="name">{{nickname || '未登录用户'}}</text>
+    <text class="current">当前身份：{{currentRole}}</text>
+    <text class="hint">{{statusText}}</text>
+  </view>
+
+  <view class="card">
+    <text class="section-title">切换身份</text>
+    <view class="role-list">
+      <button
+        wx:for="{{availableRoles}}"
+        wx:key="*this"
+        class="role-button {{currentRole === item ? 'role-button-active' : ''}}"
+        data-role="{{item}}"
+        loading="{{loading && currentRole !== item}}"
+        bindtap="onSwitchRole"
+      >
+        {{item}}
+      </button>
+    </view>
+  </view>
+</view>

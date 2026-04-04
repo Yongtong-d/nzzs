@@ -1,0 +1,141 @@
+<scroll-view class="page" scroll-y="true">
+  <view class="page-inner">
+    <view class="section-card">
+      <view class="section-head">
+        <text class="section-title">{{texts.petSectionTitle}}</text>
+        <text class="section-desc">{{texts.petSectionDesc}}</text>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.petNameLabel}}</text>
+        <input class="field-input" placeholder="{{texts.petNamePlaceholder}}" value="{{form.pet_name}}" data-field="pet_name" bindinput="handleInput" />
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.petTypeLabel}}</text>
+        <picker mode="selector" range="{{petTypeOptions}}" value="{{petTypeIndex}}" bindchange="handlePetTypeChange">
+          <view class="picker-field">{{form.pet_type || texts.petTypePlaceholder}}</view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.petBreedLabel}}</text>
+        <input class="field-input" placeholder="{{texts.petBreedPlaceholder}}" value="{{form.pet_breed}}" data-field="pet_breed" bindinput="handleInput" />
+      </view>
+
+      <view class="field field-row">
+        <view class="field-col">
+          <text class="field-label">{{texts.petAgeLabel}}</text>
+          <input class="field-input" type="number" placeholder="{{texts.petAgePlaceholder}}" value="{{form.pet_age}}" data-field="pet_age" bindinput="handleInput" />
+        </view>
+        <view class="field-col">
+          <text class="field-label">{{texts.petWeightLabel}}</text>
+          <input class="field-input" type="digit" placeholder="{{texts.petWeightPlaceholder}}" value="{{form.pet_weight}}" data-field="pet_weight" bindinput="handleInput" />
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.petGenderLabel}}</text>
+        <picker mode="selector" range="{{genderOptions}}" value="{{genderIndex}}" bindchange="handleGenderChange">
+          <view class="picker-field">{{form.pet_gender || texts.petGenderPlaceholder}}</view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.petCharacterLabel}}</text>
+        <textarea class="field-textarea" placeholder="{{texts.petCharacterPlaceholder}}" value="{{form.pet_character}}" data-field="pet_character" bindinput="handleInput" maxlength="300"></textarea>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.feedingNotesLabel}}</text>
+        <textarea class="field-textarea" placeholder="{{texts.feedingNotesPlaceholder}}" value="{{form.feeding_notes}}" data-field="feeding_notes" bindinput="handleInput" maxlength="500"></textarea>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.specialNotesLabel}}</text>
+        <textarea class="field-textarea" placeholder="{{texts.specialNotesPlaceholder}}" value="{{form.special_notes}}" data-field="special_notes" bindinput="handleInput" maxlength="500"></textarea>
+      </view>
+
+      <view class="field field-last">
+        <text class="field-label">{{texts.petImageLabel}}</text>
+        <input class="field-input" placeholder="{{texts.petImagePlaceholder}}" value="{{form.pet_image_url}}" data-field="pet_image_url" bindinput="handleInput" />
+        <button class="ghost-button" bindtap="handleChooseImage">{{texts.chooseImageButton}}</button>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-head">
+        <text class="section-title">{{texts.serviceSectionTitle}}</text>
+        <text class="section-desc">{{texts.serviceSectionDesc}}</text>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.serviceTypeLabel}}</text>
+        <picker mode="selector" range="{{serviceTypeOptions}}" value="{{serviceTypeIndex}}" bindchange="handleServiceTypeChange">
+          <view class="picker-field">{{form.service_type || texts.serviceTypePlaceholder}}</view>
+        </picker>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.serviceDateLabel}}</text>
+        <picker mode="date" value="{{form.service_date}}" start="{{minDate}}" bindchange="handleDateChange">
+          <view class="picker-field">{{form.service_date || texts.serviceDatePlaceholder}}</view>
+        </picker>
+      </view>
+
+      <view class="field field-row">
+        <view class="field-col">
+          <text class="field-label">{{texts.startTimeLabel}}</text>
+          <picker mode="time" value="{{form.start_time}}" bindchange="handleStartTimeChange">
+            <view class="picker-field">{{form.start_time || texts.startTimePlaceholder}}</view>
+          </picker>
+        </view>
+        <view class="field-col">
+          <text class="field-label">{{texts.endTimeLabel}}</text>
+          <picker mode="time" value="{{form.end_time}}" bindchange="handleEndTimeChange">
+            <view class="picker-field">{{form.end_time || texts.endTimePlaceholder}}</view>
+          </picker>
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.addressLabel}}</text>
+        <input class="field-input" placeholder="{{texts.addressPlaceholder}}" value="{{form.address}}" data-field="address" bindinput="handleInput" />
+      </view>
+
+      <view class="field field-row">
+        <view class="field-col">
+          <text class="field-label">{{texts.contactNameLabel}}</text>
+          <input class="field-input" placeholder="{{texts.contactNamePlaceholder}}" value="{{form.contact_name}}" data-field="contact_name" bindinput="handleInput" />
+        </view>
+        <view class="field-col">
+          <text class="field-label">{{texts.contactPhoneLabel}}</text>
+          <input class="field-input" type="number" placeholder="{{texts.contactPhonePlaceholder}}" value="{{form.contact_phone}}" data-field="contact_phone" bindinput="handleInput" />
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.priceLabel}}</text>
+        <input class="field-input" type="digit" placeholder="{{texts.pricePlaceholder}}" value="{{form.price}}" data-field="price" bindinput="handleInput" />
+      </view>
+
+      <view class="field switch-field">
+        <text class="field-label">{{texts.photoFeedbackLabel}}</text>
+        <switch checked="{{form.need_photo_feedback}}" color="#16a34a" bindchange="handlePhotoFeedbackChange" />
+      </view>
+
+      <view class="field field-last">
+        <text class="field-label">{{texts.remarkLabel}}</text>
+        <textarea class="field-textarea" placeholder="{{texts.remarkPlaceholder}}" value="{{form.remark}}" data-field="remark" bindinput="handleInput" maxlength="500"></textarea>
+      </view>
+    </view>
+
+    <view wx:if="{{errorMessage}}" class="error-box">
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+
+    <button class="submit-button" bindtap="handleSubmit" loading="{{loading}}" disabled="{{loading}}">
+      {{loading ? texts.submitting : texts.submitButton}}
+    </button>
+  </view>
+</scroll-view>

@@ -1,0 +1,137 @@
+.page {
+  height: 100vh;
+  background: linear-gradient(180deg, #f6f8fb 0%, #edf2f7 100%);
+}
+
+.page-inner {
+  padding: 24rpx 24rpx 40rpx;
+  box-sizing: border-box;
+}
+
+.section-card,
+.error-box {
+  margin-bottom: 24rpx;
+  padding: 28rpx 24rpx;
+  border-radius: 24rpx;
+  background: #ffffff;
+  box-shadow: 0 12rpx 30rpx rgba(31, 41, 55, 0.08);
+}
+
+.section-head {
+  margin-bottom: 20rpx;
+}
+
+.section-title {
+  display: block;
+  font-size: 32rpx;
+  font-weight: 700;
+  color: #111827;
+}
+
+.section-desc {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.6;
+  color: #6b7280;
+}
+
+.field {
+  margin-bottom: 22rpx;
+}
+
+.field-last {
+  margin-bottom: 0;
+}
+
+.field-row {
+  display: flex;
+  gap: 18rpx;
+}
+
+.field-col {
+  flex: 1;
+}
+
+.field-label {
+  display: block;
+  margin-bottom: 12rpx;
+  font-size: 26rpx;
+  font-weight: 600;
+  color: #374151;
+}
+
+.field-input,
+.picker-field,
+.field-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border-radius: 18rpx;
+  background: #f8fafc;
+  color: #111827;
+}
+
+.field-input,
+.picker-field {
+  min-height: 88rpx;
+  padding: 0 24rpx;
+  line-height: 88rpx;
+  font-size: 28rpx;
+}
+
+.field-textarea {
+  min-height: 180rpx;
+  padding: 24rpx;
+  font-size: 27rpx;
+  line-height: 1.6;
+}
+
+.switch-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16rpx;
+}
+
+.switch-field .field-label {
+  margin-bottom: 0;
+}
+
+.ghost-button {
+  margin-top: 16rpx;
+  height: 72rpx;
+  line-height: 72rpx;
+  border: none;
+  border-radius: 16rpx;
+  background: #eef6ff;
+  color: #2563eb;
+  font-size: 24rpx;
+}
+
+.ghost-button::after,
+.submit-button::after {
+  border: 0;
+}
+
+.error-box {
+  background: #fff4f4;
+}
+
+.error-text {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #d14343;
+}
+
+.submit-button {
+  margin-top: 12rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+  border: none;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #ff9259 0%, #f97316 100%);
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 700;
+  box-shadow: 0 16rpx 28rpx rgba(249, 115, 22, 0.24);
+}

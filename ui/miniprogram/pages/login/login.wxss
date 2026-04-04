@@ -1,0 +1,147 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48rpx 24rpx;
+  box-sizing: border-box;
+  background: linear-gradient(180deg, #f7f8fa 0%, #eef3f8 100%);
+}
+
+.login-card {
+  display: flex;
+  flex-direction: column;
+  gap: 24rpx;
+  align-items: center;
+  width: 100%;
+  max-width: 680rpx;
+  transform: translateY(-20%);
+}
+
+.brand-wrap,
+.error-box {
+  background: #ffffff;
+  border-radius: 24rpx;
+  box-shadow: 0 12rpx 32rpx rgba(31, 60, 89, 0.08);
+}
+
+.brand-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 56rpx 32rpx 40rpx;
+  text-align: center;
+}
+
+.avatar-picker {
+  width: 156rpx;
+  height: 156rpx;
+  margin: 0 auto 24rpx;
+  flex-shrink: 0;
+}
+
+.avatar-shell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 156rpx;
+  height: 156rpx;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #edf4ff;
+  border: 6rpx solid #f4f8ff;
+  box-sizing: border-box;
+}
+
+.avatar-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.avatar-fallback {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #edf4ff;
+}
+
+.avatar-fallback-text {
+  font-size: 26rpx;
+  color: #6b7280;
+}
+
+.avatar-trigger {
+  height: 64rpx;
+  line-height: 64rpx;
+  margin: 0 auto 24rpx;
+  padding: 0 24rpx;
+  border: none;
+  border-radius: 999rpx;
+  background: #eef6ff;
+  color: #2563eb;
+  font-size: 24rpx;
+}
+
+.avatar-trigger::after {
+  border: 0;
+}
+
+.nickname-input {
+  width: 100%;
+  max-width: 100%;
+  height: 88rpx;
+  margin-top: 8rpx;
+  margin: 0;
+  padding: 0 24rpx;
+  box-sizing: border-box;
+  border-radius: 18rpx;
+  border: 2rpx solid #e5e7eb;
+  background: #f8fafc;
+  font-size: 28rpx;
+  color: #111827;
+  text-align: center;
+}
+
+.nickname-input input {
+  width: 100%;
+  height: 100%;
+}
+
+.login-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60%;
+  min-width: 320rpx;
+  height: 92rpx;
+  line-height: 92rpx;
+  border: none;
+  border-radius: 20rpx;
+  background: linear-gradient(135deg, #27c26a 0%, #1ea85a 100%);
+  color: #ffffff;
+  font-size: 32rpx;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 16rpx 28rpx rgba(39, 194, 106, 0.26);
+}
+
+.login-button::after {
+  border: 0;
+}
+
+.error-box {
+  padding: 28rpx 24rpx;
+  background: #fff4f4;
+}
+
+.error-text {
+  font-size: 26rpx;
+  line-height: 1.6;
+  color: #d14343;
+}

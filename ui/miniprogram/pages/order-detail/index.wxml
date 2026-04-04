@@ -1,0 +1,118 @@
+<scroll-view class="page" scroll-y="true">
+  <view class="page-inner">
+    <view wx:if="{{loading}}" class="state-card">
+      <text class="state-text">{{texts.loadingText}}</text>
+    </view>
+
+    <block wx:elif="{{order.id}}">
+      <view class="section-card status-card">
+        <view class="section-head">
+          <text class="section-title">{{texts.statusSectionTitle}}</text>
+          <text class="status-tag status-{{order.statusClass}}">{{order.statusText}}</text>
+        </view>
+
+        <view class="info-grid">
+          <view class="info-item">
+            <text class="info-label">{{texts.serviceTypeLabel}}</text>
+            <text class="info-value">{{order.serviceType}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">{{texts.serviceDateTimeLabel}}</text>
+            <text class="info-value">{{order.serviceDateTime}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">{{texts.priceLabel}}</text>
+            <text class="price-value">{{texts.pricePrefix}}{{order.price}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="section-card">
+        <view class="section-head">
+          <text class="section-title">{{texts.petSectionTitle}}</text>
+        </view>
+
+        <view class="info-row">
+          <text class="info-label">{{texts.petNameLabel}}</text>
+          <text class="info-value">{{order.petName}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.petTypeLabel}}</text>
+          <text class="info-value">{{order.petType}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.petBreedLabel}}</text>
+          <text class="info-value">{{order.petBreed}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.petAgeLabel}}</text>
+          <text class="info-value">{{order.petAge}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.petGenderLabel}}</text>
+          <text class="info-value">{{order.petGender}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.petWeightLabel}}</text>
+          <text class="info-value">{{order.petWeight}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.petCharacterLabel}}</text>
+          <text class="info-value multiline">{{order.petCharacter}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.feedingNotesLabel}}</text>
+          <text class="info-value multiline">{{order.feedingNotes}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.specialNotesLabel}}</text>
+          <text class="info-value multiline">{{order.specialNotes}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.petImageLabel}}</text>
+          <image wx:if="{{order.petImageUrl}}" class="pet-image" src="{{order.petImageUrl}}" mode="aspectFill"></image>
+          <text wx:else class="info-value">{{texts.noImageText}}</text>
+        </view>
+      </view>
+
+      <view class="section-card">
+        <view class="section-head">
+          <text class="section-title">{{texts.serviceSectionTitle}}</text>
+        </view>
+
+        <view class="info-row">
+          <text class="info-label">{{texts.addressLabel}}</text>
+          <text class="info-value multiline">{{order.address}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.contactNameLabel}}</text>
+          <text class="info-value">{{order.contactName}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.contactPhoneLabel}}</text>
+          <text class="info-value">{{order.contactPhone}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.photoFeedbackLabel}}</text>
+          <text class="info-value">{{order.needPhotoFeedbackText}}</text>
+        </view>
+        <view class="info-row">
+          <text class="info-label">{{texts.remarkLabel}}</text>
+          <text class="info-value multiline">{{order.remark}}</text>
+        </view>
+
+        <button class="record-button" bindtap="goServiceRecordList">{{texts.recordButton}}</button>
+      </view>
+
+      <view wx:if="{{primaryAction.key}}" class="action-bar">
+        <button class="primary-button" bindtap="handlePrimaryAction" loading="{{actionLoading}}" disabled="{{actionLoading}}">
+          {{primaryAction.text}}
+        </button>
+      </view>
+    </block>
+
+    <view wx:if="{{errorMessage}}" class="error-box">
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+  </view>
+</scroll-view>

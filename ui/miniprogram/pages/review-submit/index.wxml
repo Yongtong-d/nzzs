@@ -1,0 +1,46 @@
+<view class="page">
+  <scroll-view class="page-scroll" scroll-y="true">
+    <view class="page-inner">
+      <view class="section-card">
+        <view class="section-head">
+          <text class="section-title">{{texts.scoreTitle}}</text>
+          <text class="score-value">{{scoreText}}</text>
+        </view>
+
+        <view class="star-row">
+          <view
+            wx:for="{{stars}}"
+            wx:key="value"
+            class="star-dot {{item.value <= form.score ? 'star-dot-active' : ''}}"
+            data-score="{{item.value}}"
+            bindtap="handleScoreTap"
+          ></view>
+        </view>
+      </view>
+
+      <view class="section-card">
+        <view class="section-head">
+          <text class="section-title">{{texts.contentTitle}}</text>
+        </view>
+
+        <textarea
+          class="review-textarea"
+          placeholder="{{texts.contentPlaceholder}}"
+          maxlength="500"
+          value="{{form.content}}"
+          bindinput="handleContentInput"
+        />
+      </view>
+
+      <view wx:if="{{errorMessage}}" class="error-box">
+        <text class="error-text">{{errorMessage}}</text>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="bottom-bar">
+    <button class="submit-button" bindtap="handleSubmit" loading="{{submitting}}" disabled="{{submitting}}">
+      {{texts.submitButton}}
+    </button>
+  </view>
+</view>

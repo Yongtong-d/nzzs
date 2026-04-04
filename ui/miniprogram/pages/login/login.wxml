@@ -1,0 +1,39 @@
+<view class="page">
+  <view class="login-card">
+    <view class="brand-wrap">
+      <view class="avatar-picker">
+        <view class="avatar-shell">
+          <image
+            wx:if="{{avatarUrl}}"
+            class="avatar-image"
+            src="{{avatarUrl}}"
+            mode="aspectFill"
+          ></image>
+          <view wx:else class="avatar-fallback">
+            <text class="avatar-fallback-text">{{texts.avatarFallback}}</text>
+          </view>
+        </view>
+      </view>
+      <button class="avatar-trigger" open-type="chooseAvatar" bindchooseavatar="handleChooseAvatar">
+        {{texts.changeAvatar}}
+      </button>
+      <input
+        class="nickname-input"
+        type="nickname"
+        maxlength="20"
+        placeholder="{{texts.nicknamePlaceholder}}"
+        value="{{nickname}}"
+        bindinput="handleNicknameInput"
+        bindblur="handleNicknameBlur"
+      />
+    </view>
+
+    <button class="login-button" bindtap="handleLogin" loading="{{loading}}" disabled="{{loading}}">
+      {{loading ? texts.loggingIn : texts.loginButton}}
+    </button>
+
+    <view wx:if="{{errorMessage}}" class="error-box">
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+  </view>
+</view>

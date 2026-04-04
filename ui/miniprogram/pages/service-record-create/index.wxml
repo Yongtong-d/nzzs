@@ -1,0 +1,66 @@
+<scroll-view class="page" scroll-y="true">
+  <view class="page-inner">
+    <view class="section-card">
+      <view class="section-head">
+        <text class="section-title">{{texts.contentSectionTitle}}</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">{{texts.contentLabel}}</text>
+        <textarea
+          class="form-textarea"
+          name="content"
+          placeholder="{{texts.contentPlaceholder}}"
+          maxlength="300"
+          value="{{form.content}}"
+          bindinput="handleContentInput"
+        />
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">{{texts.imageLabel}}</text>
+        <view class="image-box" bindtap="chooseImage">
+          <image wx:if="{{form.imageUrl}}" class="preview-image" src="{{form.imageUrl}}" mode="aspectFill"></image>
+          <view wx:else class="image-placeholder">
+            <text class="image-placeholder-text">{{texts.imagePlaceholder}}</text>
+          </view>
+        </view>
+        <text class="form-tip">{{texts.imageTip}}</text>
+      </view>
+    </view>
+
+    <view class="section-card">
+      <view class="section-head">
+        <text class="section-title">{{texts.metaSectionTitle}}</text>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">{{texts.checkinTimeLabel}}</text>
+        <view class="readonly-box">
+          <text class="readonly-text">{{form.checkinTime}}</text>
+        </view>
+      </view>
+
+      <view class="form-item">
+        <text class="form-label">{{texts.locationLabel}}</text>
+        <input
+          class="form-input"
+          name="locationText"
+          placeholder="{{texts.locationPlaceholder}}"
+          value="{{form.locationText}}"
+          bindinput="handleLocationInput"
+        />
+      </view>
+    </view>
+
+    <view wx:if="{{errorMessage}}" class="error-box">
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+
+    <view class="action-bar">
+      <button class="submit-button" bindtap="handleSubmit" loading="{{submitting}}" disabled="{{submitting}}">
+        {{texts.submitButton}}
+      </button>
+    </view>
+  </view>
+</scroll-view>

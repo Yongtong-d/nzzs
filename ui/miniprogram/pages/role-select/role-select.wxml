@@ -1,0 +1,50 @@
+﻿<view class="page">
+  <view class="page-header">
+    <text class="page-title">{{texts.pageTitle}}</text>
+    <text class="page-desc">{{texts.pageDesc}}</text>
+  </view>
+
+  <view class="card-list">
+    <view class="role-card owner-card {{selectedRole === 'owner' ? 'role-card-active owner-active' : ''}}" data-role="owner" bindtap="handleSelectRole">
+      <view class="role-card-top">
+        <text class="role-name">{{texts.ownerName}}</text>
+        <text class="role-tag">owner</text>
+      </view>
+      <text class="role-desc">{{texts.ownerDesc}}</text>
+      <view class="role-status {{selectedRole === 'owner' ? 'role-status-active' : ''}}">
+        <text>{{selectedRole === 'owner' ? texts.selected : texts.tapToSelect}}</text>
+      </view>
+    </view>
+
+    <view class="role-card feeder-card {{selectedRole === 'feeder' ? 'role-card-active feeder-active' : ''}}" data-role="feeder" bindtap="handleSelectRole">
+      <view class="role-card-top">
+        <text class="role-name">{{texts.feederName}}</text>
+        <text class="role-tag">feeder</text>
+      </view>
+      <text class="role-desc">{{texts.feederDesc}}</text>
+      <view class="role-status {{selectedRole === 'feeder' ? 'role-status-active' : ''}}">
+        <text>{{selectedRole === 'feeder' ? texts.selected : texts.tapToSelect}}</text>
+      </view>
+    </view>
+  </view>
+
+  <button class="confirm-button" bindtap="handleConfirm" loading="{{loading}}" disabled="{{loading}}">
+    {{loading ? texts.submitting : texts.confirm}}
+  </button>
+
+  <view class="notice-card">
+    <text class="notice-title">{{texts.noticeTitle}}</text>
+    <view class="notice-item">
+      <text class="notice-label">{{texts.ownerNoticeLabel}}</text>
+      <text class="notice-text">{{texts.ownerNoticeText}}</text>
+    </view>
+    <view class="notice-item">
+      <text class="notice-label">{{texts.feederNoticeLabel}}</text>
+      <text class="notice-text">{{texts.feederNoticeText}}</text>
+    </view>
+  </view>
+
+  <view wx:if="{{errorMessage}}" class="error-box">
+    <text class="error-text">{{errorMessage}}</text>
+  </view>
+</view>

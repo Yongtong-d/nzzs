@@ -13,3 +13,6 @@ out/
 # logs
 *.log
 
+# local env
+.env.local
+

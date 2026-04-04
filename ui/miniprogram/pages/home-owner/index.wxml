@@ -1,0 +1,77 @@
+<view class="page">
+  <view class="hero-card">
+    <view class="hero-top">
+      <view>
+        <text class="hero-label">当前身份</text>
+        <text class="hero-role">宠物主人</text>
+      </view>
+      <button class="switch-button" bindtap="goRoleSelect">切换身份</button>
+    </view>
+
+    <button class="publish-button" bindtap="goCreateOrder">发布新订单</button>
+  </view>
+
+  <view class="quick-section">
+    <view class="section-head">
+      <text class="section-title">快捷入口</text>
+    </view>
+    <view class="quick-grid">
+      <view class="quick-card quick-card-orders" bindtap="goPublishedOrders">
+        <text class="quick-title">我发布的订单</text>
+        <text class="quick-desc">查看全部已发布订单</text>
+      </view>
+      <view class="quick-card quick-card-records" bindtap="goServiceRecords">
+        <text class="quick-title">服务记录</text>
+        <text class="quick-desc">查看历史服务进度</text>
+      </view>
+      <view class="quick-card quick-card-reviews" bindtap="goMyReviews">
+        <text class="quick-title">我的评价</text>
+        <text class="quick-desc">管理收到和发出的评价</text>
+      </view>
+      <view class="quick-card quick-card-profile" bindtap="goProfile">
+        <text class="quick-title">个人中心</text>
+        <text class="quick-desc">查看个人资料与设置</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="orders-section">
+    <view class="section-head">
+      <text class="section-title">最近订单</text>
+      <text class="section-link" bindtap="goPublishedOrders">查看全部</text>
+    </view>
+
+    <view wx:if="{{loading}}" class="state-card">
+      <text class="state-text">正在加载最近订单...</text>
+    </view>
+
+    <view wx:elif="{{recentOrders.length === 0}}" class="state-card">
+      <text class="state-text">暂无已发布订单，去创建第一笔订单吧。</text>
+    </view>
+
+    <view wx:else class="order-list">
+      <view wx:for="{{recentOrders}}" wx:key="id" class="order-card">
+        <view class="order-top">
+          <view>
+            <text class="pet-name">{{item.petName}}</text>
+            <text class="service-type">{{item.serviceType}}</text>
+          </view>
+          <text class="status-tag status-{{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+
+        <view class="order-info">
+          <text class="info-label">服务时间</text>
+          <text class="info-value">{{item.serviceTime}}</text>
+        </view>
+
+        <view class="order-actions">
+          <button class="detail-button" data-id="{{item.id}}" bindtap="goOrderDetail">查看详情</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{errorMessage}}" class="error-box">
+    <text class="error-text">{{errorMessage}}</text>
+  </view>
+</view>

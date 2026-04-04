@@ -1,0 +1,77 @@
+<view class="page">
+  <view class="hero-card">
+    <view class="hero-top">
+      <view>
+        <text class="hero-label">{{texts.roleLabel}}</text>
+        <text class="hero-role">{{texts.roleName}}</text>
+      </view>
+      <button class="switch-button" bindtap="goRoleSelect">{{texts.switchRoleText}}</button>
+    </view>
+
+    <button class="pickup-button" bindtap="goOrderHall">{{texts.pickupButtonText}}</button>
+  </view>
+
+  <view class="quick-section">
+    <view class="section-head">
+      <text class="section-title">{{texts.quickEntryTitle}}</text>
+    </view>
+    <view class="quick-grid">
+      <view class="quick-card quick-card-hall" bindtap="goOrderHall">
+        <text class="quick-title">{{texts.orderHallTitle}}</text>
+        <text class="quick-desc">{{texts.orderHallDesc}}</text>
+      </view>
+      <view class="quick-card quick-card-taken" bindtap="goTakenOrders">
+        <text class="quick-title">{{texts.myTakenTitle}}</text>
+        <text class="quick-desc">{{texts.myTakenDesc}}</text>
+      </view>
+      <view class="quick-card quick-card-records" bindtap="goServiceRecords">
+        <text class="quick-title">{{texts.recordsTitle}}</text>
+        <text class="quick-desc">{{texts.recordsDesc}}</text>
+      </view>
+      <view class="quick-card quick-card-profile" bindtap="goProfile">
+        <text class="quick-title">{{texts.profileTitle}}</text>
+        <text class="quick-desc">{{texts.profileDesc}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="orders-section">
+    <view class="section-head">
+      <text class="section-title">{{texts.pendingOrdersTitle}}</text>
+      <text class="section-link" bindtap="goTakenOrders">{{texts.viewAllText}}</text>
+    </view>
+
+    <view wx:if="{{loading}}" class="state-card">
+      <text class="state-text">{{texts.loadingText}}</text>
+    </view>
+
+    <view wx:elif="{{pendingOrders.length === 0}}" class="state-card">
+      <text class="state-text">{{texts.emptyText}}</text>
+    </view>
+
+    <view wx:else class="order-list">
+      <view wx:for="{{pendingOrders}}" wx:key="id" class="order-card">
+        <view class="order-top">
+          <view>
+            <text class="pet-name">{{item.petName}}</text>
+            <text class="service-type">{{item.serviceType}}</text>
+          </view>
+          <text class="status-tag status-{{item.statusClass}}">{{item.statusText}}</text>
+        </view>
+
+        <view class="order-info">
+          <text class="info-label">{{texts.serviceTimeLabel}}</text>
+          <text class="info-value">{{item.serviceTime}}</text>
+        </view>
+
+        <view class="order-actions">
+          <button class="detail-button" data-id="{{item.id}}" bindtap="goOrderDetail">{{texts.detailButtonText}}</button>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view wx:if="{{errorMessage}}" class="error-box">
+    <text class="error-text">{{errorMessage}}</text>
+  </view>
+</view>

@@ -1,27 +1,51 @@
-<!--index.wxml-->
-<scroll-view class="scrollarea" scroll-y type="list">
-  <view class="container">
-    <view class="userinfo">
-      <block wx:if="{{canIUseNicknameComp && !hasUserInfo}}">
-        <button class="avatar-wrapper" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
-          <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-        </button>
-        <view class="nickname-wrapper">
-          <text class="nickname-label">昵称</text>
-          <input type="nickname" class="nickname-input" placeholder="请输入昵称" bind:change="onInputChange" />
-        </view>
-      </block>
-      <block wx:elif="{{!hasUserInfo}}">
-        <button wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
-        <view wx:else> 请使用2.10.4及以上版本基础库 </view>
-      </block>
-      <block wx:else>
-        <image bindtap="bindViewTap" class="userinfo-avatar" src="{{userInfo.avatarUrl}}" mode="cover"></image>
-        <text class="userinfo-nickname">{{userInfo.nickName}}</text>
-      </block>
+<scroll-view class="page-scroll" scroll-y type="list">
+  <view class="page">
+    <view class="hero">
+      <text class="brand">NZZS AUTH</text>
+      <text class="headline">微信登录与身份切换</text>
+      <text class="summary">登录后默认拥有 owner 身份，可在角色页切换为 feeder，并实时查询当前身份。</text>
     </view>
-    <view class="usermotto">
-      <text class="user-motto">{{motto}}</text>
+
+    <view class="panel profile-panel">
+      <view class="panel-header">
+        <text class="panel-title">登录信息</text>
+        <text class="role-badge">{{currentRole}}</text>
+      </view>
+
+      <view class="avatar-wrap">
+        <button class="avatar-button" open-type="chooseAvatar" bind:chooseavatar="onChooseAvatar">
+          <image class="avatar-image" src="{{avatarUrl}}" mode="aspectFill"></image>
+        </button>
+        <text class="avatar-tip">点击头像更新微信头像</text>
+      </view>
+
+      <view class="field">
+        <text class="field-label">昵称</text>
+        <input wx:if="{{canIUseNicknameComp}}" type="nickname" class="field-input" placeholder="请输入昵称" value="{{nickname}}" bindinput="onNicknameChange" />
+        <input wx:else class="field-input" placeholder="请输入昵称" value="{{nickname}}" bindinput="onNicknameChange" />
+      </view>
+
+      <view class="field">
+        <text class="field-label">接口地址</text>
+        <text class="field-endpoint">{{apiBaseUrl}}/auth/login</text>
+      </view>
+
+      <button class="primary-button" loading="{{loading}}" bindtap="submitLogin">立即登录</button>
+      <button class="secondary-button" bindtap="goToRolePage">身份切换</button>
+      <button class="ghost-button" bindtap="clearLoginState">清空本地状态</button>
+    </view>
+
+    <view class="panel status-panel">
+      <text class="panel-title">当前状态</text>
+      <text class="status-text">{{statusText}}</text>
+      <view class="chip-row">
+        <text class="chip">{{isLoggedIn ? '已登录' : '未登录'}}</text>
+        <text class="chip">{{isNewUser ? '新用户' : '已有账号或未登录'}}</text>
+      </view>
+      <view wx:if="{{accessToken}}" class="token-box">
+        <text class="field-label">JWT Token</text>
+        <text class="token-text">{{accessToken}}</text>
+      </view>
     </view>
   </view>
 </scroll-view>

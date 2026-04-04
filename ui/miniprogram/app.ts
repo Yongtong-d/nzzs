@@ -1,18 +1,28 @@
-// app.ts
+const DEVTOOLS_API_BASE_URL = 'http://127.0.0.1:8000'
+const LAN_API_BASE_URL = 'http://192.168.31.233:8000'
+
 App<IAppOption>({
-  globalData: {},
+  globalData: {
+    apiBaseUrl: DEVTOOLS_API_BASE_URL,
+    token: '',
+    loginUser: undefined,
+  },
   onLaunch() {
-    // 展示本地存储能力
+    const { platform } = wx.getSystemInfoSync()
+    this.globalData.apiBaseUrl = platform === 'devtools' ? DEVTOOLS_API_BASE_URL : LAN_API_BASE_URL
+
     const logs = wx.getStorageSync('logs') || []
     logs.unshift(Date.now())
     wx.setStorageSync('logs', logs)
 
-    // 登录
-    wx.login({
-      success: res => {
-        console.log(res.code)
-        // 发送 res.code 到后台换取 openId, sessionKey, unionId
-      },
-    })
+    const token = wx.getStorageSync('accessToken')
+    const loginUser = wx.getStorageSync('loginUser')
+
+    if (token) {
+      this.globalData.token = token
+    }
+    if (loginUser) {
+      this.globalData.loginUser = loginUser
+    }
   },
 })

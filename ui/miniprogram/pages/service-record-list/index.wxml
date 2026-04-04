@@ -1,0 +1,53 @@
+<scroll-view class="page" scroll-y="true">
+  <view class="page-inner">
+    <view wx:if="{{loading}}" class="state-card">
+      <text class="state-text">{{texts.loadingText}}</text>
+    </view>
+
+    <block wx:elif="{{records.length}}">
+      <view class="timeline">
+        <view wx:for="{{records}}" wx:key="id" class="timeline-item">
+          <view class="timeline-dot"></view>
+          <view class="record-card">
+            <view class="record-head">
+              <text class="record-time">{{item.checkinTime}}</text>
+            </view>
+
+            <view class="record-row">
+              <text class="record-label">{{texts.contentLabel}}</text>
+              <text class="record-value record-value-multiline">{{item.content}}</text>
+            </view>
+
+            <view class="record-row">
+              <text class="record-label">{{texts.locationLabel}}</text>
+              <text class="record-value">{{item.locationText}}</text>
+            </view>
+
+            <view wx:if="{{item.imageUrl}}" class="record-row record-row-image">
+              <text class="record-label">{{texts.imageLabel}}</text>
+              <image
+                class="record-image"
+                src="{{item.imageUrl}}"
+                mode="aspectFill"
+                data-url="{{item.imageUrl}}"
+                bindtap="previewImage"
+              />
+            </view>
+          </view>
+        </view>
+      </view>
+    </block>
+
+    <view wx:else class="state-card">
+      <text class="state-text">{{texts.emptyText}}</text>
+    </view>
+
+    <view wx:if="{{errorMessage}}" class="error-box">
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+
+    <view wx:if="{{showCreateButton}}" class="action-bar">
+      <button class="primary-button" bindtap="goCreateRecord">{{texts.createButton}}</button>
+    </view>
+  </view>
+</scroll-view>

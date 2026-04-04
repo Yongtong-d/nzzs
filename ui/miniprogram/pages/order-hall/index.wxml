@@ -1,0 +1,94 @@
+<scroll-view class="page" scroll-y="true">
+  <view class="page-inner">
+    <view class="filter-card">
+      <view class="filter-head">
+        <text class="section-title">{{texts.filterTitle}}</text>
+        <text class="reload-link" bindtap="handleReload">{{texts.reloadText}}</text>
+      </view>
+
+      <view class="filter-grid">
+        <view class="filter-item">
+          <text class="filter-label">{{texts.serviceTypeLabel}}</text>
+          <picker mode="selector" range="{{serviceTypeOptions}}" value="{{serviceTypeIndex}}" bindchange="handleServiceTypeFilterChange">
+            <view class="picker-field">{{serviceTypeOptions[serviceTypeIndex]}}</view>
+          </picker>
+        </view>
+
+        <view class="filter-item">
+          <text class="filter-label">{{texts.dateFilterLabel}}</text>
+          <picker mode="date" value="{{selectedDate}}" bindchange="handleDateFilterChange">
+            <view class="picker-field">{{selectedDate || texts.dateFilterPlaceholder}}</view>
+          </picker>
+        </view>
+
+        <view class="filter-item">
+          <text class="filter-label">{{texts.sortLabel}}</text>
+          <picker mode="selector" range="{{sortOptions}}" value="{{sortIndex}}" bindchange="handleSortChange">
+            <view class="picker-field">{{sortOptions[sortIndex]}}</view>
+          </picker>
+        </view>
+      </view>
+
+      <view wx:if="{{selectedDate}}" class="filter-actions">
+        <button class="ghost-button" bindtap="clearDateFilter">{{texts.clearDateText}}</button>
+      </view>
+    </view>
+
+    <view class="list-section">
+      <view class="section-head">
+        <text class="section-title">{{texts.listTitle}}</text>
+        <text class="section-subtitle">{{filteredOrders.length}}{{texts.orderCountSuffix}}</text>
+      </view>
+
+      <view wx:if="{{loading}}" class="state-card">
+        <text class="state-text">{{texts.loadingText}}</text>
+      </view>
+
+      <view wx:elif="{{filteredOrders.length === 0}}" class="state-card">
+        <text class="state-text">{{texts.emptyText}}</text>
+        <button class="ghost-button" bindtap="handleReload">{{texts.reloadText}}</button>
+      </view>
+
+      <view wx:else class="order-list">
+        <view wx:for="{{filteredOrders}}" wx:key="id" class="order-card">
+          <view class="order-top">
+            <view class="order-main">
+              <text class="pet-name">{{item.petName}}</text>
+              <text class="pet-meta">{{item.petTypeBreed}}</text>
+            </view>
+            <text class="status-tag status-{{item.statusClass}}">{{item.statusText}}</text>
+          </view>
+
+          <view class="info-row">
+            <text class="info-label">{{texts.serviceTypeInfoLabel}}</text>
+            <text class="info-value">{{item.serviceType}}</text>
+          </view>
+
+          <view class="info-row">
+            <text class="info-label">{{texts.serviceTimeInfoLabel}}</text>
+            <text class="info-value">{{item.serviceDateTime}}</text>
+          </view>
+
+          <view class="info-row">
+            <text class="info-label">{{texts.addressInfoLabel}}</text>
+            <text class="info-value">{{item.address}}</text>
+          </view>
+
+          <view class="order-bottom">
+            <text class="price-text">{{texts.pricePrefix}}{{item.price}}</text>
+            <view class="action-row">
+              <button class="detail-button" data-id="{{item.id}}" bindtap="goOrderDetail">{{texts.detailButton}}</button>
+              <button class="accept-button" data-id="{{item.id}}" disabled="{{item.acceptDisabled || loading}}" bindtap="handleAcceptOrder">
+                {{item.acceptDisabled ? texts.acceptedButton : texts.acceptButton}}
+              </button>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{errorMessage}}" class="error-box">
+      <text class="error-text">{{errorMessage}}</text>
+    </view>
+  </view>
+</scroll-view>

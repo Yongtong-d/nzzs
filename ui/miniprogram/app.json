@@ -1,12 +1,27 @@
 {
   "pages": [
+    "pages/login/login",
+    "pages/order-create/index",
+    "pages/order-detail/index",
+    "pages/order-hall/index",
+    "pages/my-published-orders/index",
+    "pages/my-taken-orders/index",
+    "pages/profile/index",
+    "pages/review-submit/index",
+    "pages/service-record-create/index",
+    "pages/service-record-list/index",
+    "pages/role-select/index",
+    "pages/role-select/role-select",
+    "pages/home-owner/index",
+    "pages/home-feeder/index",
     "pages/index/index",
+    "pages/role/role",
     "pages/logs/logs"
   ],
   "window": {
     "navigationBarTextStyle": "black",
-    "navigationBarTitleText": "Weixin",
-    "navigationBarBackgroundColor": "#ffffff"
+    "navigationBarTitleText": "NZZS",
+    "navigationBarBackgroundColor": "#f6f1e8"
   },
   "style": "v2",
   "componentFramework": "glass-easel",
