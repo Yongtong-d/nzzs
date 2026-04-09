@@ -15,7 +15,7 @@ function buildUserView(user, wechatProfile) {
       (wechatProfile && wechatProfile.avatar) ||
       (user && user.avatar) ||
       DEFAULT_AVATAR,
-    role: user && user.role ? user.role : 'owner',
+    role: user && user.role ? user.role : 'feeder',
   };
 }
 
@@ -24,7 +24,6 @@ function getRoleText(role) {
 }
 
 const texts = {
-  switchRole: '\u5207\u6362\u8eab\u4efd',
   myPublishedOrders: '\u6211\u53d1\u5e03\u7684\u8ba2\u5355',
   myTakenOrders: '\u6211\u63a5\u53d6\u7684\u8ba2\u5355',
   myReviews: '\u6211\u7684\u8bc4\u4ef7',
@@ -37,12 +36,23 @@ Page({
     loading: false,
     errorMessage: '',
     user: buildUserView(null),
-    currentRoleText: getRoleText('owner'),
+    currentRoleText: getRoleText('feeder'),
     texts,
   },
 
   onShow() {
+    this.setTabBarSelected(3);
     this.loadUserInfo();
+  },
+
+  setTabBarSelected(index) {
+    if (typeof this.getTabBar !== 'function') {
+      return;
+    }
+    const tabBar = this.getTabBar();
+    if (tabBar && tabBar.setData) {
+      tabBar.setData({ selected: index });
+    }
   },
 
   async loadUserInfo() {
@@ -68,12 +78,6 @@ Page({
     app.globalData.token = token || '';
     app.globalData.loginUser = nextUser;
     app.globalData.wechatProfile = wechatProfile || {};
-  },
-
-  goRoleSelect() {
-    wx.navigateTo({
-      url: '/pages/role-select/index',
-    });
   },
 
   goMyPublishedOrders() {

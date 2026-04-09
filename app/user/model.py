@@ -15,7 +15,10 @@ class User(Base):
     openid: Mapped[str] = mapped_column(String(64), unique=True, index=True, nullable=False)
     nickname: Mapped[str] = mapped_column(String(50), nullable=False)
     avatar: Mapped[str] = mapped_column(String(255), nullable=False)
-    role: Mapped[str] = mapped_column(String(20), nullable=False, default=UserRole.OWNER.value)
+    role: Mapped[str] = mapped_column(String(20), nullable=False, default=UserRole.FEEDER.value)
+    real_name: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    phone: Mapped[str | None] = mapped_column(String(20), nullable=True)
+    id_card: Mapped[str | None] = mapped_column(String(32), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True),
         nullable=False,

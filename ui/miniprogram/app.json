@@ -1,18 +1,19 @@
 {
   "pages": [
     "pages/login/login",
+    "pages/home-owner/index",
+    "pages/order-hall/index",
+    "pages/message/index",
+    "pages/profile/index",
     "pages/order-create/index",
     "pages/order-detail/index",
-    "pages/order-hall/index",
     "pages/my-published-orders/index",
     "pages/my-taken-orders/index",
-    "pages/profile/index",
     "pages/review-submit/index",
     "pages/service-record-create/index",
     "pages/service-record-list/index",
     "pages/role-select/index",
     "pages/role-select/role-select",
-    "pages/home-owner/index",
     "pages/home-feeder/index",
     "pages/index/index",
     "pages/role/role",
@@ -22,6 +23,39 @@
     "navigationBarTextStyle": "black",
     "navigationBarTitleText": "NZZS",
     "navigationBarBackgroundColor": "#f6f1e8"
+  },
+  "tabBar": {
+    "custom": true,
+    "color": "#888888",
+    "selectedColor": "#F4D35E",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/home-owner/index",
+        "text": "首页",
+        "iconPath": "assets/tab/home.png",
+        "selectedIconPath": "assets/tab/home-active.png"
+      },
+      {
+        "pagePath": "pages/order-hall/index",
+        "text": "订单",
+        "iconPath": "assets/tab/order.png",
+        "selectedIconPath": "assets/tab/order-active.png"
+      },
+      {
+        "pagePath": "pages/message/index",
+        "text": "消息",
+        "iconPath": "assets/tab/message.png",
+        "selectedIconPath": "assets/tab/message-active.png"
+      },
+      {
+        "pagePath": "pages/profile/index",
+        "text": "我的",
+        "iconPath": "assets/tab/profile.png",
+        "selectedIconPath": "assets/tab/profile-active.png"
+      }
+    ]
   },
   "style": "v2",
   "componentFramework": "glass-easel",

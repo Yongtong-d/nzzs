@@ -5,6 +5,7 @@
 
 .page-inner {
   padding: 24rpx;
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
   box-sizing: border-box;
 }
 

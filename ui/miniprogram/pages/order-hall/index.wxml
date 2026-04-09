@@ -78,8 +78,8 @@
             <text class="price-text">{{texts.pricePrefix}}{{item.price}}</text>
             <view class="action-row">
               <button class="detail-button" data-id="{{item.id}}" bindtap="goOrderDetail">{{texts.detailButton}}</button>
-              <button class="accept-button" data-id="{{item.id}}" disabled="{{item.acceptDisabled || loading}}" bindtap="handleAcceptOrder">
-                {{item.acceptDisabled ? texts.acceptedButton : texts.acceptButton}}
+              <button wx:if="{{item.showAccept}}" class="accept-button" data-id="{{item.id}}" disabled="{{loading}}" bindtap="handleAcceptOrder">
+                {{texts.acceptButton}}
               </button>
             </view>
           </view>

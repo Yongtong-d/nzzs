@@ -58,7 +58,10 @@
 
       <view class="field field-last">
         <text class="field-label">{{texts.petImageLabel}}</text>
-        <input class="field-input" placeholder="{{texts.petImagePlaceholder}}" value="{{form.pet_image_url}}" data-field="pet_image_url" bindinput="handleInput" />
+        <view class="pet-image-box">
+          <image wx:if="{{form.pet_image_url}}" class="pet-image-preview" src="{{form.pet_image_url}}" mode="aspectFill" />
+          <view wx:else class="pet-image-placeholder">{{texts.petImagePlaceholder}}</view>
+        </view>
         <button class="ghost-button" bindtap="handleChooseImage">{{texts.chooseImageButton}}</button>
       </view>
     </view>
@@ -78,29 +81,59 @@
 
       <view class="field">
         <text class="field-label">{{texts.serviceDateLabel}}</text>
-        <picker mode="date" value="{{form.service_date}}" start="{{minDate}}" bindchange="handleDateChange">
-          <view class="picker-field">{{form.service_date || texts.serviceDatePlaceholder}}</view>
-        </picker>
+        <view class="date-range-bar">
+          <picker class="date-range-picker date-range-picker-start" mode="date" value="{{form.service_start_date}}" start="{{minDate}}" bindchange="handleStartDateChange">
+            <view class="date-range-text {{form.service_start_date ? '' : 'date-range-placeholder'}}">
+              {{form.service_start_date || texts.serviceStartDatePlaceholder}}
+            </view>
+          </picker>
+          <image class="date-range-arrow-icon" src="/assets/icons/date-range-arrow.svg" mode="aspectFit" />
+          <picker class="date-range-picker date-range-picker-end" mode="date" value="{{form.service_end_date}}" start="{{form.service_start_date || minDate}}" bindchange="handleEndDateChange">
+            <view class="date-range-text {{form.service_end_date ? '' : 'date-range-placeholder'}}">
+              {{form.service_end_date || texts.serviceEndDatePlaceholder}}
+            </view>
+          </picker>
+        </view>
+        <text class="field-tip">{{texts.serviceDateTip}}</text>
       </view>
 
       <view class="field field-row">
         <view class="field-col">
           <text class="field-label">{{texts.startTimeLabel}}</text>
-          <picker mode="time" value="{{form.start_time}}" bindchange="handleStartTimeChange">
+          <picker mode="time" value="{{form.start_time}}" start="{{serviceTimeMin}}" end="{{serviceTimeMax}}" bindchange="handleStartTimeChange">
             <view class="picker-field">{{form.start_time || texts.startTimePlaceholder}}</view>
           </picker>
         </view>
         <view class="field-col">
           <text class="field-label">{{texts.endTimeLabel}}</text>
-          <picker mode="time" value="{{form.end_time}}" bindchange="handleEndTimeChange">
+          <picker mode="time" value="{{form.end_time}}" start="{{serviceTimeMin}}" end="{{serviceTimeMax}}" bindchange="handleEndTimeChange">
             <view class="picker-field">{{form.end_time || texts.endTimePlaceholder}}</view>
           </picker>
         </view>
       </view>
+      <text class="field-tip">{{texts.serviceTimeTip}}</text>
 
       <view class="field">
         <text class="field-label">{{texts.addressLabel}}</text>
-        <input class="field-input" placeholder="{{texts.addressPlaceholder}}" value="{{form.address}}" data-field="address" bindinput="handleInput" />
+        <view class="address-card">
+          <view class="address-row">
+            <text class="address-tag">主地址</text>
+            <text class="address-text {{form.address ? '' : 'address-placeholder'}}">
+              {{form.address || texts.addressPlaceholder}}
+            </text>
+          </view>
+          <view wx:if="{{form.latitude && form.longitude}}" class="location-coord">
+            经纬度：{{form.latitude}}, {{form.longitude}}
+          </view>
+        </view>
+        <button class="ghost-button" bindtap="handleChooseLocation" loading="{{locationLoading}}" disabled="{{locationLoading}}">
+          {{locationLoading ? texts.choosingLocation : texts.chooseLocationButton}}
+        </button>
+      </view>
+
+      <view class="field">
+        <text class="field-label">{{texts.detailAddressLabel}}</text>
+        <input class="field-input" placeholder="{{texts.detailAddressPlaceholder}}" value="{{form.detail_address}}" data-field="detail_address" bindinput="handleInput" />
       </view>
 
       <view class="field field-row">
@@ -121,7 +154,7 @@
 
       <view class="field switch-field">
         <text class="field-label">{{texts.photoFeedbackLabel}}</text>
-        <switch checked="{{form.need_photo_feedback}}" color="#16a34a" bindchange="handlePhotoFeedbackChange" />
+        <switch checked="{{form.need_photo_feedback}}" color="#2f2f2f" bindchange="handlePhotoFeedbackChange" />
       </view>
 
       <view class="field field-last">
@@ -134,7 +167,7 @@
       <text class="error-text">{{errorMessage}}</text>
     </view>
 
-    <button class="submit-button" bindtap="handleSubmit" loading="{{loading}}" disabled="{{loading}}">
+    <button class="submit-button" bindtap="submitOrder" loading="{{loading}}" disabled="{{loading}}">
       {{loading ? texts.submitting : texts.submitButton}}
     </button>
   </view>

@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import date, datetime, timezone
 
 from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
@@ -17,6 +17,18 @@ from app.order.schema import (
 from app.user.model import User
 from app.user.role import UserRole
 
+SERVICE_DATE_ERROR_MESSAGE = '\u6240\u6709\u670d\u52a1\u9700\u81f3\u5c11\u63d0\u524d\u4e00\u5929\u9884\u7ea6'
+
+
+def validate_service_date(service_date: date) -> None:
+    """service_date must be later than today."""
+    today = date.today()
+    if service_date <= today:
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=SERVICE_DATE_ERROR_MESSAGE,
+        )
+
 
 class OrderService:
     @staticmethod
@@ -24,7 +36,7 @@ class OrderService:
         if user.role != UserRole.OWNER.value:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Only owners can publish orders",
+                detail='Only owners can publish orders',
             )
 
     @staticmethod
@@ -32,23 +44,23 @@ class OrderService:
         if user.role != UserRole.FEEDER.value:
             raise HTTPException(
                 status_code=status.HTTP_403_FORBIDDEN,
-                detail="Only feeders can operate this action",
+                detail='Only feeders can operate this action',
             )
 
     @staticmethod
     def _get_order_or_404(db: Session, order_id: int) -> Order:
         order = db.get(Order, order_id)
         if order is None:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Order not found")
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail='Order not found')
         return order
 
     @staticmethod
     def _ensure_status(order: Order, expected: set[OrderStatus]) -> None:
         if OrderStatus(order.status) not in expected:
-            allowed = ", ".join(item.value for item in expected)
+            allowed = ', '.join(item.value for item in expected)
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail=f"Invalid order status, expected one of: {allowed}",
+                detail=f'Invalid order status, expected one of: {allowed}',
             )
 
     @staticmethod
@@ -115,6 +127,7 @@ class OrderService:
 
     def create_order(self, db: Session, payload: CreateOrderRequest, current_user: User) -> OrderDetail:
         self._ensure_owner(current_user)
+        validate_service_date(payload.service.service_date)
 
         order = Order(
             publisher_id=current_user.id,
@@ -176,7 +189,7 @@ class OrderService:
         order = self._get_order_or_404(db, order_id)
         self._ensure_status(order, {OrderStatus.PENDING})
         if order.publisher_id == current_user.id:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Cannot accept your own order")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Cannot accept your own order')
 
         order.status = OrderStatus.ACCEPTED.value
         order.taker_id = current_user.id
@@ -191,7 +204,7 @@ class OrderService:
         order = self._get_order_or_404(db, order_id)
         self._ensure_status(order, {OrderStatus.ACCEPTED})
         if order.taker_id != current_user.id:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the taker can start service")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Only the taker can start service')
 
         order.status = OrderStatus.SERVING.value
         order.started_at = self._now()
@@ -205,7 +218,7 @@ class OrderService:
         order = self._get_order_or_404(db, order_id)
         self._ensure_status(order, {OrderStatus.SERVING})
         if order.taker_id != current_user.id:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Only the taker can finish service")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='Only the taker can finish service')
 
         order.status = OrderStatus.COMPLETED.value
         order.finished_at = self._now()
@@ -227,12 +240,12 @@ class OrderService:
         is_publisher = order.publisher_id == current_user.id
         is_taker = order.taker_id == current_user.id
         if not is_publisher and not is_taker:
-            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="No permission to cancel this order")
+            raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail='No permission to cancel this order')
 
         if is_taker and order.status != OrderStatus.ACCEPTED.value:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Taker can only cancel accepted orders",
+                detail='Taker can only cancel accepted orders',
             )
 
         order.status = OrderStatus.CANCELLED.value

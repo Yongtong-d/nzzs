@@ -10,10 +10,6 @@
       </view>
 
       <view class="menu-card">
-        <view class="menu-item" bindtap="goRoleSelect">
-          <text class="menu-title">{{texts.switchRole}}</text>
-          <text class="menu-arrow">{{texts.arrowText}}</text>
-        </view>
         <view class="menu-item" bindtap="goMyPublishedOrders">
           <text class="menu-title">{{texts.myPublishedOrders}}</text>
           <text class="menu-arrow">{{texts.arrowText}}</text>

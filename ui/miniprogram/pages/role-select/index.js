@@ -60,7 +60,7 @@ const texts = {
 Page({
   data: {
     loading: false,
-    selectedRole: 'owner',
+    selectedRole: 'feeder',
     errorMessage: '',
     texts,
   },

@@ -103,6 +103,7 @@
 .bottom-bar {
   flex-shrink: 0;
   padding: 20rpx 24rpx calc(20rpx + env(safe-area-inset-bottom));
+  margin-bottom: calc(100rpx + env(safe-area-inset-bottom));
   background: rgba(255, 255, 255, 0.96);
   box-shadow: 0 -8rpx 24rpx rgba(15, 23, 42, 0.06);
 }

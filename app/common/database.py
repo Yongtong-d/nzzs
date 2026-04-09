@@ -2,8 +2,8 @@ from collections.abc import Generator
 
 from sqlalchemy import create_engine, inspect, text
 from sqlalchemy.engine import Engine
-from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 from sqlalchemy.exc import OperationalError
+from sqlalchemy.orm import DeclarativeBase, Session, sessionmaker
 
 from app.common.config import settings
 
@@ -33,7 +33,7 @@ def get_engine() -> Engine:
                 pool_pre_ping=True,
             )
         except ModuleNotFoundError as exc:
-            raise RuntimeError("缺少 PyMySQL 依赖，请先安装: pip install pymysql") from exc
+            raise RuntimeError('Missing dependency PyMySQL. Please install with: pip install pymysql') from exc
     return _engine
 
 
@@ -68,17 +68,24 @@ def init_db() -> None:
         bind=engine,
         tables=[User.__table__, Order.__table__, ServiceRecord.__table__, Review.__table__],
     )
+
     inspector = inspect(engine)
-    columns = {column["name"] for column in inspector.get_columns(User.__tablename__)}
-    if "role" not in columns:
-        try:
-            with engine.begin() as connection:
+    columns = {column['name'] for column in inspector.get_columns(User.__tablename__)}
+
+    try:
+        with engine.begin() as connection:
+            if 'role' not in columns:
                 connection.execute(
-                    text("ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'owner'")
+                    text("ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'feeder'")
                 )
-        except OperationalError as exc:
-            raise RuntimeError(
-                "数据库缺少 users.role 字段，且当前账号没有 ALTER TABLE 权限。"
-                "请使用有权限的账号先执行："
-                "ALTER TABLE users ADD COLUMN role VARCHAR(20) NOT NULL DEFAULT 'owner';"
-            ) from exc
+            connection.execute(
+                text("ALTER TABLE users MODIFY COLUMN role VARCHAR(20) NOT NULL DEFAULT 'feeder'")
+            )
+            if 'real_name' not in columns:
+                connection.execute(text('ALTER TABLE users ADD COLUMN real_name VARCHAR(50) NULL'))
+            if 'phone' not in columns:
+                connection.execute(text('ALTER TABLE users ADD COLUMN phone VARCHAR(20) NULL'))
+            if 'id_card' not in columns:
+                connection.execute(text('ALTER TABLE users ADD COLUMN id_card VARCHAR(32) NULL'))
+    except OperationalError as exc:
+        raise RuntimeError('Failed to migrate users table. Please verify ALTER TABLE permissions.') from exc

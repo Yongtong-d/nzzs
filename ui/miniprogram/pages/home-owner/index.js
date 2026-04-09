@@ -1,134 +1,34 @@
-const STORAGE_TOKEN_KEY = 'accessToken';
-const STORAGE_USER_KEY = 'loginUser';
-const app = getApp();
-
-function request(options) {
-  const { url, method = 'GET', data = {}, header = {} } = options;
-  const baseUrl = (app.globalData && app.globalData.apiBaseUrl) || '';
-
-  return new Promise((resolve, reject) => {
-    wx.request({
-      url: `${baseUrl}${url}`,
-      method,
-      data,
-      header: {
-        'content-type': 'application/json',
-        ...header,
-      },
-      success(res) {
-        if (res.statusCode >= 200 && res.statusCode < 300) {
-          resolve(res.data);
-          return;
-        }
-
-        const message =
-          (res.data && res.data.detail) ||
-          (res.data && res.data.message) ||
-          `请求失败，状态码 ${res.statusCode}`;
-        reject(new Error(message));
-      },
-      fail(err) {
-        reject(new Error((err && err.errMsg) || '网络请求失败'));
-      },
-    });
-  });
-}
-
-function formatDate(value) {
-  if (!value) {
-    return '待定';
-  }
-
-  const date = new Date(value);
-  if (Number.isNaN(date.getTime())) {
-    return value;
-  }
-
-  const year = date.getFullYear();
-  const month = `${date.getMonth() + 1}`.padStart(2, '0');
-  const day = `${date.getDate()}`.padStart(2, '0');
-  return `${year}-${month}-${day}`;
-}
-
-function getStatusMeta(status) {
-  const statusMap = {
-    pending: { text: '待接单', className: 'pending' },
-    accepted: { text: '已接单', className: 'accepted' },
-    serving: { text: '服务中', className: 'serving' },
-    completed: { text: '已完成', className: 'completed' },
-    cancelled: { text: '已取消', className: 'cancelled' },
-  };
-
-  return statusMap[status] || { text: status || '未知状态', className: 'pending' };
-}
-
 Page({
   data: {
-    loading: false,
-    errorMessage: '',
-    recentOrders: [],
+    texts: {
+      pageTitle: '\u9996\u9875',
+      pageSubtitle: '\u5ba0\u7269\u4e3b\u4eba\u7684\u670d\u52a1\u7ba1\u7406',
+      createTitle: '\u5feb\u901f\u53d1\u5e03\u9700\u6c42',
+      createDesc: '\u7b80\u6d01\u63d0\u4ea4\u5ba0\u7269\u7167\u770b\u9700\u6c42\uff0c\u5feb\u901f\u5339\u914d\u5582\u517b\u8005\u3002',
+      createButton: '\u53d1\u5e03\u65b0\u8ba2\u5355',
+      quickEntryTitle: '\u6838\u5fc3\u5165\u53e3',
+      orderCenterTitle: '\u8ba2\u5355\u7ba1\u7406',
+      orderCenterDesc: '\u7edf\u4e00\u5728\u8ba2\u5355\u9875\u67e5\u770b\u4e0e\u7ba1\u7406',
+      publishedTitle: '\u6211\u7684\u53d1\u5e03',
+      publishedDesc: '\u67e5\u770b\u5df2\u53d1\u5e03\u8ba2\u5355\u8bb0\u5f55',
+      reviewsTitle: '\u6211\u7684\u8bc4\u4ef7',
+      reviewsDesc: '\u7ba1\u7406\u6536\u5230\u548c\u53d1\u51fa\u7684\u8bc4\u4ef7',
+      profileTitle: '\u4e2a\u4eba\u4e2d\u5fc3',
+      profileDesc: '\u8d26\u53f7\u4fe1\u606f\u4e0e\u8bbe\u7f6e',
+    },
   },
 
   onShow() {
-    this.loadRecentOrders();
+    this.setTabBarSelected(0);
   },
 
-  async loadRecentOrders() {
-    const token = (app.globalData && app.globalData.token) || wx.getStorageSync(STORAGE_TOKEN_KEY);
-    if (!token) {
-      this.setData({
-        errorMessage: '请先完成登录',
-        recentOrders: [],
-      });
+  setTabBarSelected(index) {
+    if (typeof this.getTabBar !== 'function') {
       return;
     }
-
-    const loginUser = wx.getStorageSync(STORAGE_USER_KEY);
-    if (loginUser) {
-      app.globalData = app.globalData || {};
-      app.globalData.loginUser = loginUser;
-      app.globalData.token = token;
-    }
-
-    this.setData({
-      loading: true,
-      errorMessage: '',
-    });
-
-    try {
-      const result = await request({
-        url: '/orders/my/published',
-        method: 'GET',
-        header: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      const orderList = Array.isArray(result.data) ? result.data : [];
-      const recentOrders = orderList.slice(0, 5).map((item) => {
-        const statusMeta = getStatusMeta(item.status);
-        return {
-          id: item.id,
-          petName: item.pet && item.pet.pet_name ? item.pet.pet_name : '未命名宠物',
-          serviceType: item.service && item.service.service_type ? item.service.service_type : '暂无服务类型',
-          serviceTime: item.service && item.service.service_date ? formatDate(item.service.service_date) : '待定',
-          statusText: statusMeta.text,
-          statusClass: statusMeta.className,
-        };
-      });
-
-      this.setData({
-        recentOrders,
-      });
-    } catch (error) {
-      this.setData({
-        errorMessage: (error && error.message) || '最近订单加载失败',
-        recentOrders: [],
-      });
-    } finally {
-      this.setData({
-        loading: false,
-      });
+    const tabBar = this.getTabBar();
+    if (tabBar && tabBar.setData) {
+      tabBar.setData({ selected: index });
     }
   },
 
@@ -139,39 +39,27 @@ Page({
   },
 
   goPublishedOrders() {
-    wx.navigateTo({
-      url: '/pages/my-published-orders/index',
+    wx.switchTab({
+      url: '/pages/order-hall/index',
     });
   },
 
   goServiceRecords() {
     wx.navigateTo({
-      url: '/pages/service-records/index',
+      url: '/pages/my-published-orders/index',
     });
   },
 
   goMyReviews() {
-    wx.navigateTo({
-      url: '/pages/my-reviews/index',
+    wx.showToast({
+      title: '\u6211\u7684\u8bc4\u4ef7\u9875\u9762\u5f85\u8865\u5145',
+      icon: 'none',
     });
   },
 
   goProfile() {
-    wx.navigateTo({
+    wx.switchTab({
       url: '/pages/profile/index',
-    });
-  },
-
-  goRoleSelect() {
-    wx.navigateTo({
-      url: '/pages/role-select/index',
-    });
-  },
-
-  goOrderDetail(e) {
-    const { id } = e.currentTarget.dataset;
-    wx.navigateTo({
-      url: `/pages/order-detail/index?id=${id}`,
     });
   },
 });

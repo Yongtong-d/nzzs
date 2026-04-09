@@ -1,260 +1,255 @@
 .page {
   min-height: 100vh;
-  padding: 28rpx 24rpx 40rpx;
   box-sizing: border-box;
-  background: linear-gradient(180deg, #f6f8fb 0%, #edf2f7 100%);
+  padding: 24rpx;
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
+  background: #f7f7f7;
 }
 
-.hero-card,
-.quick-card,
-.order-card,
-.state-card,
-.error-box {
-  background: #ffffff;
-  border-radius: 24rpx;
-  box-shadow: 0 12rpx 30rpx rgba(31, 41, 55, 0.08);
-}
-
-.hero-card {
-  padding: 32rpx 28rpx;
-}
-
-.hero-top {
+.top-bar {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16rpx;
+  margin-bottom: 20rpx;
 }
 
-.hero-label {
-  display: block;
-  font-size: 24rpx;
-  color: #6b7280;
+.top-main {
+  flex: 1;
 }
 
-.hero-role {
+.top-title {
   display: block;
-  margin-top: 10rpx;
   font-size: 40rpx;
+  line-height: 1.2;
   font-weight: 700;
-  color: #1f2937;
+  color: #222222;
 }
 
-.switch-button {
+.top-subtitle {
+  display: block;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #888888;
+}
+
+.outline-button,
+.primary-button,
+.action-button {
+  margin: 0;
+}
+
+.outline-button::after,
+.primary-button::after,
+.action-button::after {
+  border: 0;
+}
+
+.outline-button {
   height: 64rpx;
   line-height: 64rpx;
-  margin: 0;
-  padding: 0 24rpx;
-  border: none;
-  border-radius: 999rpx;
-  background: #eef2ff;
-  color: #3154d6;
+  padding: 0 22rpx;
+  border-radius: 14rpx;
+  border: 1rpx solid #eaeaea;
+  background: #ffffff;
+  color: #222222;
   font-size: 24rpx;
 }
 
-.switch-button::after {
-  border: 0;
+.core-entry-card,
+.quick-card,
+.state-card,
+.order-card,
+.error-box {
+  background: #ffffff;
+  border: 1rpx solid #eaeaea;
+  border-radius: 16rpx;
 }
 
-.publish-button {
-  margin-top: 28rpx;
-  height: 92rpx;
-  line-height: 92rpx;
-  border: none;
-  border-radius: 20rpx;
-  background: linear-gradient(135deg, #ff9259 0%, #f97316 100%);
-  color: #ffffff;
-  font-size: 32rpx;
+.core-entry-card {
+  padding: 28rpx 24rpx;
+}
+
+.card-title {
+  display: block;
+  font-size: 30rpx;
   font-weight: 700;
-  box-shadow: 0 16rpx 28rpx rgba(249, 115, 22, 0.24);
+  color: #222222;
 }
 
-.publish-button::after,
-.detail-button::after {
-  border: 0;
+.card-desc {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #888888;
+}
+
+.primary-button {
+  margin-top: 20rpx;
+  height: 76rpx;
+  line-height: 76rpx;
+  border-radius: 14rpx;
+  background: #2f2f2f;
+  color: #ffffff;
+  font-size: 28rpx;
+  font-weight: 600;
 }
 
 .quick-section,
 .orders-section {
-  margin-top: 28rpx;
+  margin-top: 24rpx;
 }
 
 .section-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 18rpx;
+  margin-bottom: 14rpx;
 }
 
 .section-title {
   font-size: 30rpx;
   font-weight: 700;
-  color: #1f2937;
+  color: #222222;
 }
 
 .section-link {
   font-size: 24rpx;
-  color: #3154d6;
+  color: #888888;
 }
 
 .quick-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 18rpx;
+  gap: 16rpx;
 }
 
 .quick-card {
-  min-height: 168rpx;
-  padding: 24rpx;
+  min-height: 150rpx;
+  padding: 22rpx;
   box-sizing: border-box;
-}
-
-.quick-card-orders {
-  background: linear-gradient(180deg, #ffffff 0%, #fff5ec 100%);
-}
-
-.quick-card-records {
-  background: linear-gradient(180deg, #ffffff 0%, #eef8ff 100%);
-}
-
-.quick-card-reviews {
-  background: linear-gradient(180deg, #ffffff 0%, #f3f0ff 100%);
-}
-
-.quick-card-profile {
-  background: linear-gradient(180deg, #ffffff 0%, #eefbf3 100%);
 }
 
 .quick-title {
   display: block;
   font-size: 28rpx;
-  font-weight: 700;
-  color: #1f2937;
+  font-weight: 600;
+  color: #222222;
 }
 
 .quick-desc {
   display: block;
-  margin-top: 12rpx;
-  font-size: 24rpx;
+  margin-top: 8rpx;
+  font-size: 23rpx;
   line-height: 1.6;
-  color: #6b7280;
+  color: #888888;
 }
 
 .state-card {
-  padding: 28rpx;
+  padding: 24rpx;
 }
 
 .state-text {
-  font-size: 26rpx;
-  color: #6b7280;
+  font-size: 25rpx;
+  line-height: 1.7;
+  color: #888888;
 }
 
 .order-list {
   display: flex;
   flex-direction: column;
-  gap: 20rpx;
+  gap: 14rpx;
 }
 
 .order-card {
-  padding: 28rpx 24rpx;
+  padding: 24rpx;
 }
 
 .order-top {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16rpx;
+  gap: 12rpx;
 }
 
 .pet-name {
   display: block;
-  font-size: 32rpx;
+  font-size: 30rpx;
   font-weight: 700;
-  color: #111827;
+  color: #222222;
 }
 
 .service-type {
   display: block;
-  margin-top: 10rpx;
-  font-size: 25rpx;
-  color: #6b7280;
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #888888;
 }
 
 .status-tag {
   flex-shrink: 0;
-  padding: 10rpx 18rpx;
+  padding: 8rpx 14rpx;
   border-radius: 999rpx;
   font-size: 22rpx;
-  font-weight: 600;
+  line-height: 1.2;
 }
 
 .status-pending {
-  background: #fff4db;
-  color: #b76a00;
+  background: #fdf6df;
+  color: #a37a0f;
 }
 
-.status-accepted {
-  background: #e8f2ff;
-  color: #1d4ed8;
-}
-
-.status-serving {
-  background: #e6f9ef;
-  color: #0f9f61;
-}
-
-.status-completed {
-  background: #ecfdf3;
-  color: #15803d;
-}
-
+.status-accepted,
+.status-serving,
+.status-completed,
 .status-cancelled {
-  background: #fff1f2;
-  color: #dc2626;
+  background: #f5f5f5;
+  color: #666666;
 }
 
 .order-info {
-  margin-top: 22rpx;
+  margin-top: 16rpx;
 }
 
 .info-label {
   display: block;
-  font-size: 23rpx;
-  color: #9ca3af;
+  font-size: 22rpx;
+  color: #888888;
 }
 
 .info-value {
   display: block;
-  margin-top: 8rpx;
-  font-size: 26rpx;
-  color: #374151;
+  margin-top: 6rpx;
+  font-size: 25rpx;
+  color: #222222;
 }
 
 .order-actions {
+  margin-top: 16rpx;
   display: flex;
   justify-content: flex-end;
-  margin-top: 24rpx;
 }
 
-.detail-button {
-  height: 68rpx;
-  line-height: 68rpx;
-  margin: 0;
-  padding: 0 28rpx;
-  border: none;
-  border-radius: 999rpx;
-  background: #1f2937;
-  color: #ffffff;
+.action-button {
+  height: 66rpx;
+  line-height: 66rpx;
+  padding: 0 24rpx;
+  border-radius: 12rpx;
+  border: 1rpx solid #eaeaea;
+  background: #ffffff;
+  color: #222222;
   font-size: 24rpx;
 }
 
 .error-box {
   margin-top: 24rpx;
-  padding: 24rpx;
-  background: #fff4f4;
+  padding: 20rpx;
+  background: #fff7f7;
 }
 
 .error-text {
-  font-size: 26rpx;
-  line-height: 1.6;
-  color: #d14343;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #b24343;
 }

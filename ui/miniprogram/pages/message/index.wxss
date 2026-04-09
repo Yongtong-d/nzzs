@@ -1,0 +1,48 @@
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 24rpx;
+  padding-bottom: calc(140rpx + env(safe-area-inset-bottom));
+  background: #f7f7f7;
+}
+
+.top-bar {
+  margin-bottom: 20rpx;
+}
+
+.top-title {
+  display: block;
+  font-size: 40rpx;
+  line-height: 1.2;
+  font-weight: 700;
+  color: #222222;
+}
+
+.top-subtitle {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #888888;
+}
+
+.message-card {
+  background: #ffffff;
+  border-radius: 16rpx;
+  border: 1rpx solid #eaeaea;
+  padding: 32rpx 24rpx;
+}
+
+.message-title {
+  display: block;
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #222222;
+}
+
+.message-desc {
+  display: block;
+  margin-top: 12rpx;
+  font-size: 24rpx;
+  line-height: 1.7;
+  color: #888888;
+}

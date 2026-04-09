@@ -1,3 +1,6 @@
 {
-  "navigationBarTitleText": "\u5ba0\u7269\u5582\u517b\u8005\u9996\u9875"
+  "navigationBarTitleText": "首页",
+  "usingComponents": {
+    "custom-tab-bar": "/custom-tab-bar/index"
+  }
 }

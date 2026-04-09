@@ -19,7 +19,7 @@ class UserRepository:
             openid=openid,
             nickname=payload.nickname,
             avatar=payload.avatar,
-            role=UserRole.OWNER.value,
+            role=UserRole.FEEDER.value,
             created_at=now,
             last_login_at=now,
         )

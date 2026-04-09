@@ -1,4 +1,5 @@
 const STORAGE_TOKEN_KEY = 'accessToken';
+const STORAGE_USER_KEY = 'loginUser';
 const app = getApp();
 
 function request(options) {
@@ -23,31 +24,37 @@ function request(options) {
         const message =
           (res.data && res.data.detail) ||
           (res.data && res.data.message) ||
-          `\u8bf7\u6c42\u5931\u8d25\uff0c\u72b6\u6001\u7801 ${res.statusCode}`;
+          `请求失败，状态码 ${res.statusCode}`;
         reject(new Error(message));
       },
       fail(err) {
-        reject(new Error((err && err.errMsg) || '\u7f51\u7edc\u8bf7\u6c42\u5931\u8d25'));
+        reject(new Error((err && err.errMsg) || '网络请求失败'));
       },
     });
   });
 }
 
+function getUserRole() {
+  const appUser = app.globalData && app.globalData.loginUser;
+  const cacheUser = wx.getStorageSync(STORAGE_USER_KEY);
+  return (appUser && appUser.role) || (cacheUser && cacheUser.role) || 'feeder';
+}
+
 function getStatusMeta(status) {
   const map = {
-    pending: { text: '\u5f85\u63a5\u5355', className: 'pending' },
-    accepted: { text: '\u5df2\u63a5\u5355', className: 'accepted' },
-    serving: { text: '\u670d\u52a1\u4e2d', className: 'serving' },
-    completed: { text: '\u5df2\u5b8c\u6210', className: 'completed' },
-    cancelled: { text: '\u5df2\u53d6\u6d88', className: 'cancelled' },
+    pending: { text: '待接单', className: 'pending' },
+    accepted: { text: '已接单', className: 'accepted' },
+    serving: { text: '服务中', className: 'serving' },
+    completed: { text: '已完成', className: 'completed' },
+    cancelled: { text: '已取消', className: 'cancelled' },
   };
 
-  return map[status] || { text: status || '\u672a\u77e5\u72b6\u6001', className: 'pending' };
+  return map[status] || { text: status || '未知状态', className: 'pending' };
 }
 
 function formatDate(value) {
   if (!value) {
-    return '\u5f85\u5b9a';
+    return '待定';
   }
 
   const date = new Date(value);
@@ -66,8 +73,8 @@ function extractTimeRange(remark) {
     return '';
   }
 
-  const startMatch = remark.match(/\u5f00\u59cb\u65f6\u95f4[:\uff1a]\s*(\d{2}:\d{2})/);
-  const endMatch = remark.match(/\u7ed3\u675f\u65f6\u95f4[:\uff1a]\s*(\d{2}:\d{2})/);
+  const startMatch = remark.match(/开始时间[:：]\s*(\d{2}:\d{2})/);
+  const endMatch = remark.match(/结束时间[:：]\s*(\d{2}:\d{2})/);
 
   if (startMatch && endMatch) {
     return `${startMatch[1]}-${endMatch[1]}`;
@@ -78,34 +85,33 @@ function extractTimeRange(remark) {
   return '';
 }
 
-function mapOrder(item) {
+function mapOrder(item, mode) {
   const statusMeta = getStatusMeta(item.status);
   const petType = item.pet && item.pet.pet_type ? item.pet.pet_type : '';
   const petBreed = item.pet && item.pet.pet_breed ? item.pet.pet_breed : '';
-  const serviceDate = item.service && item.service.service_date ? formatDate(item.service.service_date) : '\u5f85\u5b9a';
+  const serviceDate = item.service && item.service.service_date ? formatDate(item.service.service_date) : '待定';
   const timeRange = item.service && item.service.service_remark ? extractTimeRange(item.service.service_remark) : '';
 
   return {
     id: item.id,
     rawStatus: item.status,
-    petName: item.pet && item.pet.pet_name ? item.pet.pet_name : '\u672a\u547d\u540d\u5ba0\u7269',
-    petTypeBreed: [petType, petBreed].filter(Boolean).join(' / ') || '\u6682\u65e0\u54c1\u79cd\u4fe1\u606f',
-    serviceType: item.service && item.service.service_type ? item.service.service_type : '\u6682\u65e0\u670d\u52a1\u7c7b\u578b',
+    petName: item.pet && item.pet.pet_name ? item.pet.pet_name : '未命名宠物',
+    petTypeBreed: [petType, petBreed].filter(Boolean).join(' / ') || '暂无品种信息',
+    serviceType: item.service && item.service.service_type ? item.service.service_type : '暂无服务类型',
     serviceDate: item.service && item.service.service_date ? item.service.service_date : '',
     serviceDateTime: timeRange ? `${serviceDate} ${timeRange}` : serviceDate,
-    address: item.service && item.service.service_address ? item.service.service_address : '\u6682\u65e0\u5730\u5740',
+    address: item.service && item.service.service_address ? item.service.service_address : '暂无地址',
     price: item.service && item.service.service_price ? item.service.service_price : '0',
     statusText: statusMeta.text,
     statusClass: statusMeta.className,
-    acceptDisabled: item.status !== 'pending',
-    createdAt: item.created_at || '',
+    showAccept: mode === 'hall' && item.status === 'pending',
   };
 }
 
 function sortOrders(list, sortValue) {
   const nextList = [...list];
 
-  if (sortValue === '\u4ef7\u683c\u4f18\u5148') {
+  if (sortValue === '价格优先') {
     nextList.sort((a, b) => Number(b.price) - Number(a.price));
     return nextList;
   }
@@ -118,34 +124,61 @@ function sortOrders(list, sortValue) {
   return nextList;
 }
 
-const texts = {
-  filterTitle: '\u7b5b\u9009\u6761\u4ef6',
-  reloadText: '\u91cd\u65b0\u52a0\u8f7d',
-  serviceTypeLabel: '\u670d\u52a1\u7c7b\u578b',
-  dateFilterLabel: '\u65e5\u671f\u7b5b\u9009',
-  dateFilterPlaceholder: '\u5168\u90e8\u65e5\u671f',
-  sortLabel: '\u6392\u5e8f\u65b9\u5f0f',
-  clearDateText: '\u6e05\u7a7a\u65e5\u671f\u7b5b\u9009',
-  listTitle: '\u8ba2\u5355\u5217\u8868',
-  orderCountSuffix: '\u6761',
-  loadingText: '\u6b63\u5728\u52a0\u8f7d\u8ba2\u5355\u5927\u5385...',
-  emptyText: '\u6682\u65e0\u7b26\u5408\u6761\u4ef6\u7684\u8ba2\u5355\uff0c\u8bf7\u7a0d\u540e\u518d\u8bd5\u3002',
-  serviceTypeInfoLabel: '\u670d\u52a1\u7c7b\u578b',
-  serviceTimeInfoLabel: '\u670d\u52a1\u65f6\u95f4',
-  addressInfoLabel: '\u670d\u52a1\u5730\u5740',
-  pricePrefix: '\u00a5',
-  detailButton: '\u67e5\u770b\u8be6\u60c5',
-  acceptButton: '\u63a5\u5355',
-  acceptedButton: '\u4e0d\u53ef\u63a5\u5355',
-};
+function buildTexts(role, mode) {
+  if (mode === 'hall') {
+    return {
+      filterTitle: '筛选条件',
+      reloadText: '重新加载',
+      serviceTypeLabel: '服务类型',
+      dateFilterLabel: '日期筛选',
+      dateFilterPlaceholder: '全部日期',
+      sortLabel: '排序方式',
+      clearDateText: '清空日期筛选',
+      listTitle: '可接订单',
+      orderCountSuffix: '条',
+      loadingText: '正在加载可接订单...',
+      emptyText: '暂无可接订单，请稍后再试。',
+      serviceTypeInfoLabel: '服务类型',
+      serviceTimeInfoLabel: '服务时间',
+      addressInfoLabel: '服务地址',
+      pricePrefix: '¥',
+      detailButton: '查看详情',
+      acceptButton: '接单',
+      acceptedButton: '不可接单',
+    };
+  }
+
+  return {
+    filterTitle: '筛选条件',
+    reloadText: '重新加载',
+    serviceTypeLabel: '服务类型',
+    dateFilterLabel: '日期筛选',
+    dateFilterPlaceholder: '全部日期',
+    sortLabel: '排序方式',
+    clearDateText: '清空日期筛选',
+    listTitle: role === 'feeder' ? '我的接单' : '我的订单',
+    orderCountSuffix: '条',
+    loadingText: role === 'feeder' ? '正在加载我的接单...' : '正在加载我的订单...',
+    emptyText: role === 'feeder' ? '暂无接单记录。' : '暂无已发布订单。',
+    serviceTypeInfoLabel: '服务类型',
+    serviceTimeInfoLabel: '服务时间',
+    addressInfoLabel: '服务地址',
+    pricePrefix: '¥',
+    detailButton: '查看详情',
+    acceptButton: '接单',
+    acceptedButton: '不可接单',
+  };
+}
 
 Page({
   data: {
     loading: false,
     errorMessage: '',
-    texts,
-    serviceTypeOptions: ['\u5168\u90e8\u670d\u52a1', '\u4e0a\u95e8\u5582\u517b', '\u905b\u72d7', '\u4e0a\u95e8\u7167\u770b'],
-    sortOptions: ['\u65f6\u95f4\u4f18\u5148', '\u4ef7\u683c\u4f18\u5148'],
+    role: 'feeder',
+    sourceMode: 'taken',
+    texts: buildTexts('feeder', 'taken'),
+    serviceTypeOptions: ['全部服务'],
+    sortOptions: ['时间优先', '价格优先'],
     serviceTypeIndex: 0,
     sortIndex: 0,
     selectedDate: '',
@@ -157,6 +190,21 @@ Page({
     this.loadOrders();
   },
 
+  onShow() {
+    this.setTabBarSelected(1);
+    this.loadOrders();
+  },
+
+  setTabBarSelected(index) {
+    if (typeof this.getTabBar !== 'function') {
+      return;
+    }
+    const tabBar = this.getTabBar();
+    if (tabBar && tabBar.setData) {
+      tabBar.setData({ selected: index });
+    }
+  },
+
   onPullDownRefresh() {
     this.loadOrders(true);
   },
@@ -165,7 +213,7 @@ Page({
     const token = (app.globalData && app.globalData.token) || wx.getStorageSync(STORAGE_TOKEN_KEY);
     if (!token) {
       this.setData({
-        errorMessage: '\u8bf7\u5148\u5b8c\u6210\u767b\u5f55',
+        errorMessage: '请先完成登录',
         orderList: [],
         filteredOrders: [],
       });
@@ -175,28 +223,57 @@ Page({
       return;
     }
 
+    const role = getUserRole();
+
     this.setData({
       loading: true,
       errorMessage: '',
+      role,
     });
 
     try {
-      const result = await request({
-        url: '/orders/hall',
+      let sourceMode = role === 'owner' ? 'owner' : 'taken';
+      let endpoint = role === 'owner' ? '/orders/my/published' : '/orders/my/taken';
+
+      let result = await request({
+        url: endpoint,
         method: 'GET',
         header: {
           Authorization: `Bearer ${token}`,
         },
       });
 
-      const list = Array.isArray(result.data) ? result.data.map(mapOrder) : [];
+      let rawList = Array.isArray(result.data) ? result.data : [];
+
+      if (role === 'feeder' && rawList.length === 0) {
+        sourceMode = 'hall';
+        endpoint = '/orders/hall';
+        result = await request({
+          url: endpoint,
+          method: 'GET',
+          header: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        rawList = Array.isArray(result.data) ? result.data : [];
+      }
+
+      const orderList = rawList.map((item) => mapOrder(item, sourceMode));
+      const serviceTypes = Array.from(new Set(orderList.map((item) => item.serviceType).filter(Boolean)));
+
       this.setData({
-        orderList: list,
+        sourceMode,
+        texts: buildTexts(role, sourceMode),
+        serviceTypeOptions: ['全部服务', ...serviceTypes],
+        serviceTypeIndex: 0,
+        selectedDate: '',
+        orderList,
       });
+
       this.applyFilters();
     } catch (error) {
       this.setData({
-        errorMessage: (error && error.message) || '\u8ba2\u5355\u5927\u5385\u52a0\u8f7d\u5931\u8d25',
+        errorMessage: (error && error.message) || '订单加载失败',
         orderList: [],
         filteredOrders: [],
       });
@@ -211,13 +288,13 @@ Page({
   },
 
   applyFilters() {
-    const serviceType = this.data.serviceTypeOptions[this.data.serviceTypeIndex];
+    const serviceType = this.data.serviceTypeOptions[this.data.serviceTypeIndex] || '全部服务';
     const sortValue = this.data.sortOptions[this.data.sortIndex];
     const selectedDate = this.data.selectedDate;
 
     let list = [...this.data.orderList];
 
-    if (serviceType && serviceType !== '\u5168\u90e8\u670d\u52a1') {
+    if (serviceType !== '全部服务') {
       list = list.filter((item) => item.serviceType === serviceType);
     }
 
@@ -265,6 +342,10 @@ Page({
   },
 
   async handleAcceptOrder(e) {
+    if (this.data.sourceMode !== 'hall') {
+      return;
+    }
+
     const { id } = e.currentTarget.dataset;
     const token = (app.globalData && app.globalData.token) || wx.getStorageSync(STORAGE_TOKEN_KEY);
     if (!id || !token || this.data.loading) {
@@ -277,7 +358,7 @@ Page({
     });
 
     wx.showLoading({
-      title: '\u63a5\u5355\u4e2d',
+      title: '接单中',
       mask: true,
     });
 
@@ -291,13 +372,13 @@ Page({
       });
 
       wx.showToast({
-        title: '\u63a5\u5355\u6210\u529f',
+        title: '接单成功',
         icon: 'success',
       });
 
       await this.loadOrders();
     } catch (error) {
-      const message = (error && error.message) || '\u63a5\u5355\u5931\u8d25';
+      const message = (error && error.message) || '接单失败';
       this.setData({
         errorMessage: message,
       });

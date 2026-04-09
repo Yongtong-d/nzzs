@@ -13,6 +13,9 @@ class RoleService:
             nickname=user.nickname,
             avatar=user.avatar,
             role=UserRole(user.role),
+            real_name=user.real_name,
+            phone=user.phone,
+            id_card=user.id_card,
             created_at=user.created_at,
             last_login_at=user.last_login_at,
         )

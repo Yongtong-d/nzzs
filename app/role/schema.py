@@ -11,6 +11,9 @@ class CurrentRoleUserInfo(BaseModel):
     nickname: str
     avatar: str
     role: UserRole
+    real_name: str | None = None
+    phone: str | None = None
+    id_card: str | None = None
     created_at: datetime
     last_login_at: datetime
 
