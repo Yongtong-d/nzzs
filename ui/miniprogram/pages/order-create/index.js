@@ -177,9 +177,9 @@ const SERVICE_TIME_MIN = '08:00';
 const SERVICE_TIME_MAX = '22:00';
 const MIN_DURATION_MINUTES = 60;
 
-const petTypeOptions = ['\u732b', '\u72d7', '\u5176\u4ed6'];
+const defaultPetTypeOptions = ['\u732b', '\u72d7', '\u5176\u4ed6'];
 const genderOptions = ['\u516c', '\u6bcd', '\u672a\u77e5'];
-const serviceTypeOptions = ['\u4e0a\u95e8\u5582\u517b', '\u905b\u72d7', '\u4e0a\u95e8\u7167\u770b'];
+const defaultServiceTypeOptions = ['\u4e0a\u95e8\u5582\u517b', '\u905b\u72d7', '\u4e0a\u95e8\u7167\u770b'];
 
 const texts = {
   petSectionTitle: '\u5ba0\u7269\u4fe1\u606f',
@@ -251,9 +251,9 @@ Page({
     minDate: getTomorrowDate(),
     serviceTimeMin: SERVICE_TIME_MIN,
     serviceTimeMax: SERVICE_TIME_MAX,
-    petTypeOptions,
+    petTypeOptions: defaultPetTypeOptions,
     genderOptions,
-    serviceTypeOptions,
+    serviceTypeOptions: defaultServiceTypeOptions,
     petTypeIndex: -1,
     genderIndex: -1,
     serviceTypeIndex: -1,
@@ -294,7 +294,35 @@ Page({
       serviceTimeMin: SERVICE_TIME_MIN,
       serviceTimeMax: SERVICE_TIME_MAX,
     });
+    this.loadOrderOptions();
     this.initLocation();
+  },
+
+  async loadOrderOptions() {
+    try {
+      const result = await request({
+        url: '/orders/options',
+      });
+      const data = (result && result.data) || {};
+      const petTypes = Array.isArray(data.pet_types) && data.pet_types.length ? data.pet_types : defaultPetTypeOptions;
+      const serviceTypes =
+        Array.isArray(data.service_types) && data.service_types.length ? data.service_types : defaultServiceTypeOptions;
+
+      const petTypeIndex = petTypes.indexOf(this.data.form.pet_type);
+      const serviceTypeIndex = serviceTypes.indexOf(this.data.form.service_type);
+
+      this.setData({
+        petTypeOptions: petTypes,
+        serviceTypeOptions: serviceTypes,
+        petTypeIndex,
+        serviceTypeIndex,
+      });
+    } catch (error) {
+      this.setData({
+        petTypeOptions: defaultPetTypeOptions,
+        serviceTypeOptions: defaultServiceTypeOptions,
+      });
+    }
   },
 
   initLocation() {

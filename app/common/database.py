@@ -59,6 +59,8 @@ def get_db() -> Generator[Session, None, None]:
 
 def init_db() -> None:
     from app.order.model import Order
+    from app.order_option.model import OrderOption
+    from app.order_option.service import order_option_service
     from app.review.model import Review
     from app.service_record.model import ServiceRecord
     from app.user.model import User
@@ -66,7 +68,7 @@ def init_db() -> None:
     engine = get_engine()
     Base.metadata.create_all(
         bind=engine,
-        tables=[User.__table__, Order.__table__, ServiceRecord.__table__, Review.__table__],
+        tables=[User.__table__, Order.__table__, OrderOption.__table__, ServiceRecord.__table__, Review.__table__],
     )
 
     inspector = inspect(engine)
@@ -89,3 +91,9 @@ def init_db() -> None:
                 connection.execute(text('ALTER TABLE users ADD COLUMN id_card VARCHAR(32) NULL'))
     except OperationalError as exc:
         raise RuntimeError('Failed to migrate users table. Please verify ALTER TABLE permissions.') from exc
+
+    db = get_session_factory()()
+    try:
+        order_option_service.ensure_defaults(db)
+    finally:
+        db.close()

@@ -4,11 +4,17 @@ from sqlalchemy.orm import Session
 from app.common.auth import get_current_user
 from app.common.database import get_db
 from app.common.response import ApiResponse, success_response
-from app.order.schema import CancelOrderRequest, CreateOrderRequest, OrderDetail, OrderSummary
+from app.order.schema import CancelOrderRequest, CreateOrderRequest, OrderDetail, OrderOptionsResponse, OrderSummary
 from app.order.service import order_service
+from app.order_option.service import order_option_service
 from app.user.model import User
 
 router = APIRouter(prefix='/orders', tags=['orders'])
+
+
+@router.get('/options', response_model=ApiResponse[OrderOptionsResponse], summary='订单下拉选项')
+def get_order_options(db: Session = Depends(get_db)) -> ApiResponse[OrderOptionsResponse]:
+    return success_response(OrderOptionsResponse(**order_option_service.get_options(db)))
 
 
 @router.post('', response_model=ApiResponse[OrderDetail], summary='创建订单')

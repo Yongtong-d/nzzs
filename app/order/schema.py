@@ -66,3 +66,8 @@ class OrderSummary(BaseModel):
 class OrderDetail(OrderSummary):
     cancel_reason: str | None
     updated_at: datetime
+
+
+class OrderOptionsResponse(BaseModel):
+    pet_types: list[str]
+    service_types: list[str]
